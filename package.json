@@ -1,0 +1,340 @@
+{
+  "name": "phpstorm-parameter-hints-in-vscode",
+  "displayName": "PhpStorm Parameter Hints in VScode",
+  "description": "PhpStorm parameter hint for VS Code",
+  "version": "1.0.0",
+  "publisher": "MrChetan",
+  "engines": {
+    "vscode": "^1.54.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrchetan/phpstorm-parameter-hints-in-vscode"
+  },
+  "homepage": "https://github.com/mrchetan/phpstorm-parameter-hints-in-vscode",
+  "bugs": {
+    "url": "https://github.com/mrchetan/phpstorm-parameter-hints-in-vscode/issues"
+  },
+  "icon": "logo.png",
+  "categories": [
+    "Programming Languages",
+    "Visualization",
+    "Linters",
+    "Education",
+    "Other"
+  ],    
+  "keywords": [
+    "PHP",
+    "Language",
+    "references",
+    "parameter",
+    "symbols",
+    "PHP Extension",
+    "PHPStorm",
+    "PHPStorm Extension",
+    "PHPStorm Parameter Hints",
+    "PHPStorm Parameter Hints in VScode",
+    "Parameter Hints in VS Code",
+    "Parameter Hints"
+],
+  "activationEvents": [
+    "onLanguage:php"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "phpParameterHint.toggle",
+        "title": "PHP Parameter Hint: Hide / Show Hints"
+      },
+      {
+        "command": "phpParameterHint.toggleOnChange",
+        "title": "PHP Parameter Hint: Hide / Show Hints on text change"
+      },
+      {
+        "command": "phpParameterHint.toggleOnSave",
+        "title": "PHP Parameter Hint: Hide / Show Hints on document save"
+      },
+      {
+        "command": "phpParameterHint.toggleTypeName",
+        "title": "PHP Parameter Hint: Hint name(default), type and name or only type"
+      },
+      {
+        "command": "phpParameterHint.toggleLiterals",
+        "title": "PHP Parameter Hint: Hide / Show Hints only for literals"
+      },
+      {
+        "command": "phpParameterHint.toggleLine",
+        "title": "PHP Parameter Hint: Hide / Show Hints only for current line"
+      },
+      {
+        "command": "phpParameterHint.toggleCollapse",
+        "title": "PHP Parameter Hint: Hide / Show Hints when variable name matches parameter name"
+      },
+      {
+        "command": "phpParameterHint.toggleCollapseType",
+        "title": "PHP Parameter Hint: Toggle collapsing type with parameter name when they are equal"
+      },
+      {
+        "command": "phpParameterHint.toggleFullType",
+        "title": "PHP Parameter Hint: Toggle showing full type instead of short name"
+      },
+      {
+        "command": "phpParameterHint.toggleVisibleRanges",
+        "title": "PHP Parameter Hint: Hide / Show Hints only in visible ranges"
+      },
+      {
+        "command": "phpParameterHint.toggleDollarSign",
+        "title": "PHP Parameter Hint: Hide / Show dollar sign for parameter name"
+      }
+    ],
+    "configuration": [
+      {
+        "title": "PHP Parameter Hint",
+        "properties": {
+          "phpParameterHint.enabled": {
+            "type": "boolean",
+            "description": "Enable PHP Parameter Hint",
+            "default": true
+          },
+          "phpParameterHint.onSave": {
+            "type": "boolean",
+            "description": "Create parameter hints on document save",
+            "default": true
+          },
+          "phpParameterHint.saveDelay": {
+            "type": "integer",
+            "description": "Delay in ms for on document save run",
+            "default": 250
+          },
+          "phpParameterHint.onChange": {
+            "type": "boolean",
+            "description": "Create parameter hints on document change",
+            "default": false
+          },
+          "phpParameterHint.changeDelay": {
+            "type": "integer",
+            "description": "Delay in ms for on document change run",
+            "default": 100
+          },
+          "phpParameterHint.textEditorChangeDelay": {
+            "type": "integer",
+            "description": "Delay in ms for on active text editor change",
+            "default": 250
+          },
+          "phpParameterHint.collapseHintsWhenEqual": {
+            "type": "boolean",
+            "description": "Collapse hint when variable name is the same as parameter name, keep the hint if the argument is passed by reference or if the splat operator is used",
+            "default": false
+          },
+          "phpParameterHint.collapseTypeWhenEqual": {
+            "type": "boolean",
+            "description": "Collapse type when it is equal to the variable name",
+            "default": false
+          },
+          "phpParameterHint.showFullType": {
+            "type": "boolean",
+            "description": "Show full type, including namespaces instead of the short name",
+            "default": false
+          },
+          "phpParameterHint.hintOnlyLiterals": {
+            "type": "boolean",
+            "description": "Show hints only for literals",
+            "default": false
+          },
+          "phpParameterHint.hintTypeName": {
+            "type": "number",
+            "description": "Hint only name(0 - default) / Hint type and name(1) / Hint type(2)",
+            "default": 0
+          },
+          "phpParameterHint.hintOnlyLine": {
+            "type": "boolean",
+            "description": "Show hints only for current line",
+            "default": false
+          },
+          "phpParameterHint.hintOnlyVisibleRanges": {
+            "type": "boolean",
+            "description": "Show hints only for visibleRanges",
+            "default": false
+          },
+          "phpParameterHint.showDollarSign": {
+            "type": "boolean",
+            "description": "Show dollar sign for parameter name",
+            "default": false
+          },
+          "phpParameterHint.php7": {
+            "type": "boolean",
+            "description": "True if php version is 7.0+, false otherwise",
+            "default": true
+          },
+          "phpParameterHint.opacity": {
+            "type": "number",
+            "default": 0.4
+          },
+          "phpParameterHint.borderRadius": {
+            "type": "number",
+            "default": 5
+          },
+          "phpParameterHint.fontWeight": {
+            "type": "number",
+            "default": 400,
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ],
+            "description": "Hints styling of font-weight CSS property"
+          },
+          "phpParameterHint.fontStyle": {
+            "type": "string",
+            "default": "italic",
+            "enum": [
+              "normal",
+              "italic"
+            ],
+            "description": "Hints styling of font-style CSS property"
+          },
+          "phpParameterHint.margin": {
+            "type": "number",
+            "default": 2,
+            "description": "Hints styling of margin CSS property"
+          },
+          "phpParameterHint.verticalPadding": {
+            "type": "number",
+            "default": 1,
+            "description": "Top and bottom padding of the hints"
+          },
+          "phpParameterHint.horizontalPadding": {
+            "type": "number",
+            "default": 4,
+            "description": "Right and left padding of the hints"
+          },
+          "phpParameterHint.fontSize": {
+            "type": "number",
+            "default": 12,
+            "description": "Hints styling of font size CSS property"
+          }
+        }
+      }
+    ],
+    "colors": [
+      {
+        "id": "phpParameterHint.hintForeground",
+        "description": "Specifies the foreground color for the hints",
+        "defaults": {
+          "dark": "#8D9BD6",
+          "light": "#1a0000",
+          "highContrast": "#8D9BD6"
+        }
+      },
+      {
+        "id": "phpParameterHint.hintBackground",
+        "description": "Specifies the background color for the hints",
+        "defaults": {
+          "dark": "#292D3E",
+          "light": "#FFFFFF",
+          "highContrast": "#292D3E"
+        }
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "phpParameterHint.toggle",
+        "key": "ctrl+k h",
+        "mac": "cmd+k h"
+      },
+      {
+        "command": "phpParameterHint.toggleOnChange",
+        "key": "ctrl+k o",
+        "mac": "cmd+k o"
+      },
+      {
+        "command": "phpParameterHint.toggleOnSave",
+        "key": "ctrl+k s",
+        "mac": "cmd+k s"
+      },
+      {
+        "command": "phpParameterHint.toggleTypeName",
+        "key": "ctrl+k t",
+        "mac": "cmd+k t"
+      },
+      {
+        "command": "phpParameterHint.toggleLiterals",
+        "key": "ctrl+k l",
+        "mac": "cmd+k l"
+      },
+      {
+        "command": "phpParameterHint.toggleLine",
+        "key": "ctrl+k i",
+        "mac": "cmd+k i"
+      },
+      {
+        "command": "phpParameterHint.toggleCollapse",
+        "key": "ctrl+k c",
+        "mac": "cmd+k c"
+      },
+      {
+        "command": "phpParameterHint.toggleCollapseType",
+        "key": "ctrl+k y",
+        "mac": "cmd+k y"
+      },
+      {
+        "command": "phpParameterHint.toggleFullType",
+        "key": "ctrl+k u",
+        "mac": "cmd+k u"
+      },
+      {
+        "command": "phpParameterHint.toggleVisibleRanges",
+        "key": "ctrl+k r",
+        "mac": "cmd+k r"
+      },
+      {
+        "command": "phpParameterHint.toggleDollarSign",
+        "key": "ctrl+k d",
+        "mac": "cmd+k d"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "cross-env NODE_ENV=test mocha 'src/**/*.spec.js'",
+    "coverage": "nyc --reporter=html npm run test",
+    "test:vscode": "node test/runTest.js",
+    "lint": "eslint .",
+    "vscode:prepublish": "webpack --mode production",
+    "webpack": "webpack --mode development",
+    "webpack-dev": "webpack --mode development --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.37",
+    "@types/vscode": "^1.54.0",
+    "chai": "^4.3.4",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.23.0",
+    "eslint-plugin-chai-friendly": "^0.6.0",
+    "glob": "^7.1.6",
+    "mocha": "^8.3.2",
+    "nyc": "^15.1.0",
+    "sinon": "^10.0.0",
+    "vscode-test": "^1.5.2",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0"
+  },
+  "dependencies": {
+    "fast-copy": "^2.1.1",
+    "js-coroutines": "^2.4.15",
+    "lodash.debounce": "^4.0.8",
+    "lzutf8": "^0.6.0",
+    "node-cache": "^5.1.2",
+    "php-parser": "^3.0.2"
+  },
+  "extensionDependencies": [
+    "bmewburn.vscode-intelephense-client"
+  ]
+}
