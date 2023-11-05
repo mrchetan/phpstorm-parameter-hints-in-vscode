@@ -1,8 +1,10 @@
 # PHP Parameter Hint for Visual Studio Code
 
-[![VS Marketplace Version](https://vsmarketplacebadge.apphb.com/version-short/MrChetan.phpstorm-parameter-hints-in-vscode.svg)](https://marketplace.visualstudio.com/items?itemName=MrChetan.phpstorm-parameter-hints-in-vscode)
+[![VS Marketplace Version](https://vsmarketplacebadges.dev/version/MrChetan.phpstorm-parameter-hints-in-vscode.png?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=MrChetan.phpstorm-parameter-hints-in-vscode)
+[![Installs](https://vsmarketplacebadges.dev/installs-short/MrChetan.phpstorm-parameter-hints-in-vscode.png?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=MrChetan.phpstorm-parameter-hints-in-vscode)
+[![Rating](https://vsmarketplacebadges.dev/rating/MrChetan.phpstorm-parameter-hints-in-vscode.png?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=MrChetan.phpstorm-parameter-hints-in-vscode)
 
-![PhpStorm Parameter Hints in VScode Screenshot](Screenshot.png)
+![PhpStorm Parameter Hints in VScode Screenshot](./Screenshot.png)
 
 Inserts parameter hints(type, name or both) into function calls to easily understand the parameter role.
 
