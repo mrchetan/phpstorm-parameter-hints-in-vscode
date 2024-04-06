@@ -2,10 +2,10 @@
   "name": "phpstorm-parameter-hints-in-vscode",
   "displayName": "PhpStorm Parameter Hints in VScode",
   "description": "PhpStorm parameter hint for VS Code",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "publisher": "MrChetan",
   "engines": {
-    "vscode": "^1.84.0"
+    "vscode": "^1.83.1"
   },
   "license": "MIT",
   "repository": {
@@ -316,7 +316,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.8.10",
-    "@types/vscode": "^1.84.0",
+    "@types/vscode": "^1.83.1",
     "chai": "^4.3.10",
     "cross-env": "^7.0.3",
     "eslint": "^8.53.0",
