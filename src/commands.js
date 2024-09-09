@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 const vscode = require('vscode');
 
 // default = 'disabled' - only name

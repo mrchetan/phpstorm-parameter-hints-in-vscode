@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 const vscode = require('vscode');
 // const { singleton } = require('js-coroutines');
 const getHints = require('./parameterExtractor');

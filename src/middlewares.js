@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 const { Position, Range } = require('vscode');
 
 /* eslint-disable no-param-reassign */

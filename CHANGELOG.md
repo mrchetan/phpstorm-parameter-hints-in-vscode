@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.0
+- Update Dependencies to latest versions
+- Change some of default settings
+
 ## 1.2.1
 
 - 1.83.1 VsCode Extension API

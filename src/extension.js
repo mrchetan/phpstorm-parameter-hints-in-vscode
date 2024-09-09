@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 const vscode = require('vscode');
 const debounce = require('lodash.debounce');
 const { Commands } = require('./commands');
