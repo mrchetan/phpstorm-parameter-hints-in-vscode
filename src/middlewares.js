@@ -26,38 +26,6 @@ const onlyLiterals = (functionGroups, shouldApply) => {
   });
 };
 
-const isInSelection = currentSelection => argument => {
-  if (
-    argument.start.line > currentSelection.start.line &&
-    argument.end.line < currentSelection.end.line
-  ) {
-    return true;
-  }
-  if (
-    argument.start.line === currentSelection.start.line &&
-    argument.end.line < currentSelection.end.line
-  ) {
-    return argument.end.character > currentSelection.start.character;
-  }
-  if (
-    argument.start.line === currentSelection.start.line &&
-    argument.end.line === currentSelection.end.line
-  ) {
-    return (
-      argument.start.character >= currentSelection.start.character ||
-      argument.end.character <= currentSelection.end.character
-    );
-  }
-  if (
-    argument.start.line > currentSelection.start.line &&
-    argument.end.line === currentSelection.end.line
-  ) {
-    return argument.start.character < currentSelection.end.character;
-  }
-
-  return false;
-};
-
 // Keep only arguments in current line/selection
 const onlySelection = (functionGroups, activeEditor, shouldApply) => {
   if (!shouldApply) {
@@ -68,19 +36,17 @@ const onlySelection = (functionGroups, activeEditor, shouldApply) => {
   let callback;
 
   if (currentSelection) {
-    if (currentSelection.isEmpty) {
-      const lines = [];
+    let lines = [];
 
-      activeEditor.selections.forEach(selection => {
-        if (selection.isEmpty) {
-          lines.push(selection.start.line);
+    // Include all selections
+    activeEditor.selections.forEach(selection => {
+
+        // For each selection: add all selected lines
+        for (let line = selection.start.line; line <= selection.end.line; line++) {
+          lines.push(line);
         }
-      });
-
-      callback = argument => lines.includes(argument.start.line);
-    } else {
-      callback = isInSelection(currentSelection);
-    }
+    });
+    callback = argument => lines.includes(argument.start.line);
 
     return functionGroups.filter(functionGroup => {
       functionGroup.args = functionGroup.args.filter(callback);
