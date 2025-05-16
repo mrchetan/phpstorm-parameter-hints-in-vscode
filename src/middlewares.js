@@ -36,17 +36,16 @@ const onlySelection = (functionGroups, activeEditor, shouldApply) => {
   let callback;
 
   if (currentSelection) {
-    let lines = [];
+    const selectedLines = new Set();
 
     // Include all selections
     activeEditor.selections.forEach(selection => {
-
-        // For each selection: add all selected lines
-        for (let line = selection.start.line; line <= selection.end.line; line++) {
-          lines.push(line);
-        }
+      for (let line = selection.start.line; line <= selection.end.line; line++) {
+        selectedLines.add(line);
+      }
     });
-    callback = argument => lines.includes(argument.start.line);
+
+    callback = argument => selectedLines.has(argument.start.line);
 
     return functionGroups.filter(functionGroup => {
       functionGroup.args = functionGroup.args.filter(callback);
