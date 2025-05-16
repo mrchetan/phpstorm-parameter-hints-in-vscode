@@ -23,7 +23,7 @@ const removeShebang = code => {
 };
 
 const getCopyFunc = () => {
-  return process.env.NODE_ENV === 'test' ? copy : copy.default;
+  return copy.default;
 };
 
 /**
