@@ -43,7 +43,7 @@
     "parameter hint",
     "PHP parameter hint",
     "PHP parameter hints"
-],
+  ],
   "activationEvents": [
     "onLanguage:php"
   ],
@@ -254,57 +254,68 @@
       {
         "command": "phpParameterHint.toggle",
         "key": "ctrl+k h",
-        "mac": "cmd+k h"
+        "mac": "cmd+k h",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       },
       {
         "command": "phpParameterHint.toggleOnChange",
         "key": "ctrl+k o",
-        "mac": "cmd+k o"
+        "mac": "cmd+k o",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       },
       {
         "command": "phpParameterHint.toggleOnSave",
         "key": "ctrl+k s",
-        "mac": "cmd+k s"
+        "mac": "cmd+k s",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       },
       {
         "command": "phpParameterHint.toggleTypeName",
         "key": "ctrl+k t",
-        "mac": "cmd+k t"
+        "mac": "cmd+k t",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       },
       {
         "command": "phpParameterHint.toggleLiterals",
         "key": "ctrl+k l",
-        "mac": "cmd+k l"
+        "mac": "cmd+k l",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       },
       {
         "command": "phpParameterHint.toggleLine",
         "key": "ctrl+k i",
-        "mac": "cmd+k i"
+        "mac": "cmd+k i",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       },
       {
         "command": "phpParameterHint.toggleCollapse",
         "key": "ctrl+k c",
-        "mac": "cmd+k c"
+        "mac": "cmd+k c",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       },
       {
         "command": "phpParameterHint.toggleCollapseType",
         "key": "ctrl+k y",
-        "mac": "cmd+k y"
+        "mac": "cmd+k y",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       },
       {
         "command": "phpParameterHint.toggleFullType",
         "key": "ctrl+k u",
-        "mac": "cmd+k u"
+        "mac": "cmd+k u",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       },
       {
         "command": "phpParameterHint.toggleVisibleRanges",
         "key": "ctrl+k r",
-        "mac": "cmd+k r"
+        "mac": "cmd+k r",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       },
       {
         "command": "phpParameterHint.toggleDollarSign",
         "key": "ctrl+k d",
-        "mac": "cmd+k d"
+        "mac": "cmd+k d",
+        "when": "editorFocus && resourceFilename =~ /.*\\.php/"
       }
     ]
   },
