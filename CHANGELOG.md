@@ -1,10 +1,16 @@
 # Change Log
 
+## 2.0.0
+
+- Fixes [#21](https://github.com/mrchetan/phpstorm-parameter-hints-in-vscode/issues/21) - Bug on single line selection
+
 ## 1.4.0
+
 - Update Dependencies to latest versions
 - modify keybindings for PHP files
 
 ## 1.3.0
+
 - Update Dependencies to latest versions
 - Change some of default settings
 

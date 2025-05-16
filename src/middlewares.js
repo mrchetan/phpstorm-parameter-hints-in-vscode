@@ -26,38 +26,6 @@ const onlyLiterals = (functionGroups, shouldApply) => {
   });
 };
 
-const isInSelection = currentSelection => argument => {
-  if (
-    argument.start.line > currentSelection.start.line &&
-    argument.end.line < currentSelection.end.line
-  ) {
-    return true;
-  }
-  if (
-    argument.start.line === currentSelection.start.line &&
-    argument.end.line < currentSelection.end.line
-  ) {
-    return argument.end.character > currentSelection.start.character;
-  }
-  if (
-    argument.start.line === currentSelection.start.line &&
-    argument.end.line === currentSelection.end.line
-  ) {
-    return (
-      argument.start.character >= currentSelection.start.character ||
-      argument.end.character <= currentSelection.end.character
-    );
-  }
-  if (
-    argument.start.line > currentSelection.start.line &&
-    argument.end.line === currentSelection.end.line
-  ) {
-    return argument.start.character < currentSelection.end.character;
-  }
-
-  return false;
-};
-
 // Keep only arguments in current line/selection
 const onlySelection = (functionGroups, activeEditor, shouldApply) => {
   if (!shouldApply) {
@@ -65,31 +33,22 @@ const onlySelection = (functionGroups, activeEditor, shouldApply) => {
   }
 
   const currentSelection = activeEditor.selection;
-  let callback;
-
-  if (currentSelection) {
-    if (currentSelection.isEmpty) {
-      const lines = [];
-
-      activeEditor.selections.forEach(selection => {
-        if (selection.isEmpty) {
-          lines.push(selection.start.line);
-        }
-      });
-
-      callback = argument => lines.includes(argument.start.line);
-    } else {
-      callback = isInSelection(currentSelection);
-    }
-
-    return functionGroups.filter(functionGroup => {
-      functionGroup.args = functionGroup.args.filter(callback);
-
-      return functionGroup.args.length > 0;
-    });
+  if (!currentSelection) {
+    return functionGroups;
   }
 
-  return functionGroups;
+  // Use a Set for efficient line lookups
+  const selectedLines = new Set();
+  activeEditor.selections.forEach(selection => {
+    for (let line = selection.start.line; line <= selection.end.line; line++) {
+      selectedLines.add(line);
+    }
+  });
+
+  return functionGroups.filter(functionGroup => {
+    functionGroup.args = functionGroup.args.filter(arg => selectedLines.has(arg.start.line));
+    return functionGroup.args.length > 0;
+  });
 };
 
 const onlyVisibleRanges = (functionGroups, activeEditor, shouldApply) => {
