@@ -33,28 +33,22 @@ const onlySelection = (functionGroups, activeEditor, shouldApply) => {
   }
 
   const currentSelection = activeEditor.selection;
-  let callback;
-
-  if (currentSelection) {
-    const selectedLines = new Set();
-
-    // Include all selections
-    activeEditor.selections.forEach(selection => {
-      for (let line = selection.start.line; line <= selection.end.line; line++) {
-        selectedLines.add(line);
-      }
-    });
-
-    callback = argument => selectedLines.has(argument.start.line);
-
-    return functionGroups.filter(functionGroup => {
-      functionGroup.args = functionGroup.args.filter(callback);
-
-      return functionGroup.args.length > 0;
-    });
+  if (!currentSelection) {
+    return functionGroups;
   }
 
-  return functionGroups;
+  // Use a Set for efficient line lookups
+  const selectedLines = new Set();
+  activeEditor.selections.forEach(selection => {
+    for (let line = selection.start.line; line <= selection.end.line; line++) {
+      selectedLines.add(line);
+    }
+  });
+
+  return functionGroups.filter(functionGroup => {
+    functionGroup.args = functionGroup.args.filter(arg => selectedLines.has(arg.start.line));
+    return functionGroup.args.length > 0;
+  });
 };
 
 const onlyVisibleRanges = (functionGroups, activeEditor, shouldApply) => {
