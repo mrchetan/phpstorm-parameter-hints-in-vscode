@@ -1,5 +1,8 @@
 # Change Log
 
+## [2.1.0]
+- Update Extension engine
+
 ## 2.0.0
 
 - Fixes [#21](https://github.com/mrchetan/phpstorm-parameter-hints-in-vscode/issues/21) - Bug on single line selection

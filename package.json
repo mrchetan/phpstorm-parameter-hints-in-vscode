@@ -2,10 +2,10 @@
   "name": "phpstorm-parameter-hints-in-vscode",
   "displayName": "PhpStorm Parameter Hints in VScode",
   "description": "PhpStorm parameter hint for VS Code",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "publisher": "MrChetan",
   "engines": {
-    "vscode": "^1.93.0"
+    "vscode": "^1.104.0"
   },
   "sponsor": {
     "url": "https://github.com/sponsors/mr-chetan"
@@ -329,18 +329,18 @@
     "webpack-dev": "webpack --mode development --watch"
   },
   "devDependencies": {
-    "@types/node": "^22.5.4",
-    "@types/vscode": "^1.93.0",
-    "chai": "^5.2.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^9.26.0",
-    "eslint-plugin-chai-friendly": "^1.0.1",
-    "glob": "^11.0.0",
-    "mocha": "^11.2.2",
-    "nyc": "^17.0.0",
-    "sinon": "^20.0.0",
+    "@types/node": "^24.7.0",
+    "@types/vscode": "^1.104.0",
+    "chai": "^6.2.0",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.37.0",
+    "eslint-plugin-chai-friendly": "^1.1.0",
+    "glob": "^11.0.3",
+    "mocha": "^11.7.4",
+    "nyc": "^17.1.0",
+    "sinon": "^21.0.0",
     "vscode-test": "^1.6.1",
-    "webpack": "^5.99.8",
+    "webpack": "^5.102.0",
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
@@ -349,7 +349,7 @@
     "lodash.debounce": "^4.0.8",
     "lzutf8": "^0.6.3",
     "node-cache": "^5.1.2",
-    "php-parser": "^3.1.5"
+    "php-parser": "^3.2.5"
   },
   "extensionDependencies": [
     "bmewburn.vscode-intelephense-client"
