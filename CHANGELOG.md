@@ -6,6 +6,8 @@
   - Users should use VS Code's standard `editorInlayHint.foreground` and `editorInlayHint.background` instead
   - See README for instructions on customizing inlay hint colors
   - Named arguments [#22](https://github.com/mrchetan/phpstorm-parameter-hints-in-vscode/issues/22)
+  - Crashing vscode [#13](https://github.com/mrchetan/phpstorm-parameter-hints-in-vscode/issues/13)
+
 - **REMOVED**: Deprecated configuration settings that no longer work with native inlay hints
   - Removed `opacity`, `borderRadius`, `fontWeight`, `fontStyle`, `margin`, `verticalPadding`, `horizontalPadding`, `fontSize`
   - Use VS Code's native settings: `editor.inlayHints.fontSize`, `editor.inlayHints.fontFamily`, etc.
