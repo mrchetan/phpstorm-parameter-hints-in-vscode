@@ -115,7 +115,7 @@ const findParamIndexByName = (args, paramName) => {
     let name = parts.length > 1 ? parts[parts.length - 1] : parts[0];
     
     // Remove special prefixes like $, &, or ...
-    name = name.replace(/^[\$&\.]+/, '');
+    name = name.replace(/^[$&.]+/, '');
     
     // Remove array brackets if present (for variadic params)
     name = name.replace(/\[.*\]$/, '');
