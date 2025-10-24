@@ -30,13 +30,13 @@ describe('parameterExtractor - Named Arguments', () => {
       functionDictionary = new Map();
 
       // Expected hints for the named arguments example
-      // Line 10: greet("John", "Hi", 2) - positional arguments
-      // Line 13: greet(name: "Jane", greeting: "Hey", times: 3) - named in order
-      // Line 16: greet(greeting: "Howdy", name: "Bob", times: 1) - named different order
-      // Line 19: greet(name: "Alice", times: 2, greeting: "Greetings") - named mixed order
-      // Line 22: greet(name: "Charlie") - only some named
+      // Line 10: greet("John", "Hi", 2) - positional arguments (should show hints)
+      // Line 13: greet(name: "Jane", greeting: "Hey", times: 3) - named in order (no hints)
+      // Line 16: greet(greeting: "Howdy", name: "Bob", times: 1) - named different order (no hints)
+      // Line 19: greet(name: "Alice", times: 2, greeting: "Greetings") - named mixed order (no hints)
+      // Line 22: greet(name: "Charlie") - only some named (no hints)
       expectedHints = [
-        // Traditional positional - greet("John", "Hi", 2)
+        // Traditional positional - greet("John", "Hi", 2) - should show hints
         [
           {
             text: 'name:',
@@ -51,58 +51,14 @@ describe('parameterExtractor - Named Arguments', () => {
             range: new Range(new Position(9, 20), new Position(9, 21))
           }
         ],
-        // Named in order - greet(name: "Jane", greeting: "Hey", times: 3)
-        [
-          {
-            text: 'name:',
-            range: new Range(new Position(12, 12), new Position(12, 18))
-          },
-          {
-            text: 'greeting:',
-            range: new Range(new Position(12, 30), new Position(12, 35))
-          },
-          {
-            text: 'times:',
-            range: new Range(new Position(12, 44), new Position(12, 45))
-          }
-        ],
-        // Named different order - greet(greeting: "Howdy", name: "Bob", times: 1)
-        [
-          {
-            text: 'greeting:',
-            range: new Range(new Position(15, 16), new Position(15, 23))
-          },
-          {
-            text: 'name:',
-            range: new Range(new Position(15, 31), new Position(15, 36))
-          },
-          {
-            text: 'times:',
-            range: new Range(new Position(15, 45), new Position(15, 46))
-          }
-        ],
-        // Named mixed order - greet(name: "Alice", times: 2, greeting: "Greetings")
-        [
-          {
-            text: 'name:',
-            range: new Range(new Position(18, 12), new Position(18, 19))
-          },
-          {
-            text: 'times:',
-            range: new Range(new Position(18, 28), new Position(18, 29))
-          },
-          {
-            text: 'greeting:',
-            range: new Range(new Position(18, 41), new Position(18, 52))
-          }
-        ],
-        // Only some named - greet(name: "Charlie")
-        [
-          {
-            text: 'name:',
-            range: new Range(new Position(21, 12), new Position(21, 21))
-          }
-        ]
+        // Named in order - no hints since names are already explicit
+        [],
+        // Named different order - no hints since names are already explicit
+        [],
+        // Named mixed order - no hints since names are already explicit
+        [],
+        // Only some named - no hints since names are already explicit
+        []
       ];
     });
 
@@ -133,7 +89,7 @@ describe('parameterExtractor - Named Arguments', () => {
       expect(hints[0][2].text).to.equal(expectedHints[0][2].text);
     });
 
-    it('should return correct hints for named arguments in order', async () => {
+    it('should not show hints for named arguments in order', async () => {
       await vscode.workspace.getConfiguration('phpParameterHint').update('hintTypeName', 0, true);
       const hints = [];
 
@@ -146,15 +102,12 @@ describe('parameterExtractor - Named Arguments', () => {
       }
 
       expect(hints).to.have.lengthOf(5);
-      expect(hints[1]).to.have.lengthOf(3);
-
-      // Verify named arguments in order
-      expect(hints[1][0].text).to.equal('name:');
-      expect(hints[1][1].text).to.equal('greeting:');
-      expect(hints[1][2].text).to.equal('times:');
+      
+      // Named arguments should not show hints since parameter names are already explicit
+      expect(hints[1]).to.have.lengthOf(0);
     });
 
-    it('should return correct hints for named arguments in different order', async () => {
+    it('should not show hints for named arguments in different order', async () => {
       await vscode.workspace.getConfiguration('phpParameterHint').update('hintTypeName', 0, true);
       const hints = [];
 
@@ -167,18 +120,12 @@ describe('parameterExtractor - Named Arguments', () => {
       }
 
       expect(hints).to.have.lengthOf(5);
-      expect(hints[2]).to.have.lengthOf(3);
-
-      // Verify named arguments match correctly even in different order
-      // The hint for the first argument (greeting: "Howdy") should still show 'greeting:'
-      expect(hints[2][0].text).to.equal('greeting:');
-      // The hint for the second argument (name: "Bob") should show 'name:'
-      expect(hints[2][1].text).to.equal('name:');
-      // The hint for the third argument (times: 1) should show 'times:'
-      expect(hints[2][2].text).to.equal('times:');
+      
+      // Named arguments should not show hints since parameter names are already explicit
+      expect(hints[2]).to.have.lengthOf(0);
     });
 
-    it('should return correct hints for named arguments in mixed order', async () => {
+    it('should not show hints for named arguments in mixed order', async () => {
       await vscode.workspace.getConfiguration('phpParameterHint').update('hintTypeName', 0, true);
       const hints = [];
 
@@ -191,15 +138,12 @@ describe('parameterExtractor - Named Arguments', () => {
       }
 
       expect(hints).to.have.lengthOf(5);
-      expect(hints[3]).to.have.lengthOf(3);
-
-      // Verify mixed order: name, times, greeting
-      expect(hints[3][0].text).to.equal('name:');
-      expect(hints[3][1].text).to.equal('times:');
-      expect(hints[3][2].text).to.equal('greeting:');
+      
+      // Named arguments should not show hints since parameter names are already explicit
+      expect(hints[3]).to.have.lengthOf(0);
     });
 
-    it('should return correct hints when only some arguments are named', async () => {
+    it('should not show hints when only some arguments are named', async () => {
       await vscode.workspace.getConfiguration('phpParameterHint').update('hintTypeName', 0, true);
       const hints = [];
 
@@ -212,10 +156,9 @@ describe('parameterExtractor - Named Arguments', () => {
       }
 
       expect(hints).to.have.lengthOf(5);
-      expect(hints[4]).to.have.lengthOf(1);
-
-      // Only name is provided
-      expect(hints[4][0].text).to.equal('name:');
+      
+      // Named arguments should not show hints since parameter names are already explicit
+      expect(hints[4]).to.have.lengthOf(0);
     });
   });
 });
