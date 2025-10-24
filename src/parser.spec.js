@@ -28,7 +28,8 @@ describe('Parser', () => {
               character: 21
             },
             name: '',
-            kind: 'string'
+            kind: 'string',
+            namedParam: null
           },
           {
             key: 1,
@@ -41,7 +42,8 @@ describe('Parser', () => {
               character: 32
             },
             name: '',
-            kind: 'array'
+            kind: 'array',
+            namedParam: null
           }
         ],
         line: 1,
@@ -82,7 +84,8 @@ describe('Parser', () => {
               character: 35
             },
             name: '',
-            kind: 'string'
+            kind: 'string',
+            namedParam: null
           },
           {
             key: 1,
@@ -95,7 +98,8 @@ describe('Parser', () => {
               character: 46
             },
             name: '',
-            kind: 'array'
+            kind: 'array',
+            namedParam: null
           }
         ],
         line: 1,
@@ -129,7 +133,8 @@ describe('Parser', () => {
               character: 32
             },
             name: '',
-            kind: 'string'
+            kind: 'string',
+            namedParam: null
           }
         ],
         line: 1,
@@ -149,7 +154,8 @@ describe('Parser', () => {
               character: 25
             },
             name: '',
-            kind: 'string'
+            kind: 'string',
+            namedParam: null
           },
           {
             key: 1,
@@ -162,7 +168,8 @@ describe('Parser', () => {
               character: 33
             },
             name: '',
-            kind: 'string'
+            kind: 'string',
+            namedParam: null
           },
           {
             key: 2,
@@ -175,7 +182,8 @@ describe('Parser', () => {
               character: 40
             },
             name: 'type',
-            kind: 'variable'
+            kind: 'variable',
+            namedParam: null
           }
         ],
         line: 2,
@@ -217,7 +225,8 @@ describe('Parser', () => {
               character: 34
             },
             name: '',
-            kind: 'string'
+            kind: 'string',
+            namedParam: null
           }
         ],
         line: 1,
@@ -237,7 +246,8 @@ describe('Parser', () => {
               character: 29
             },
             name: '',
-            kind: 'unary'
+            kind: 'unary',
+            namedParam: null
           }
         ],
         line: 2,

@@ -101,6 +101,33 @@ const createHintText = (arg, collapseHintsWhenEqual) => {
 };
 
 /**
+ * Find the parameter index by name from the args list
+ * @param {Array<string>} args - Array of parameter definitions
+ * @param {string} paramName - The parameter name to find
+ * @returns {number} - The index of the parameter, or -1 if not found
+ */
+const findParamIndexByName = (args, paramName) => {
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    // Extract parameter name from the arg string
+    // Format can be: "type $name", "$name", "type name", or just "name"
+    const parts = arg.split(' ');
+    let name = parts.length > 1 ? parts[parts.length - 1] : parts[0];
+    
+    // Remove special prefixes like $, &, or ...
+    name = name.replace(/^[$&.]+/, '');
+    
+    // Remove array brackets if present (for variadic params)
+    name = name.replace(/\[.*\]$/, '');
+    
+    if (name === paramName) {
+      return i;
+    }
+  }
+  return -1;
+};
+
+/**
  * Get the parameter name
  *
  * @param {Map<string, Array<string>>} functionDictionary
@@ -209,7 +236,19 @@ const getHints = async (functionDictionary, functionGroup, editor) => {
       }
 
       const groupArg = functionGroup.args[groupArgsCount];
-      const arg = args[index] || '';
+      
+      // For named arguments, find the parameter by name instead of position
+      let paramIndex = index;
+      if (groupArg.namedParam) {
+        paramIndex = findParamIndexByName(args, groupArg.namedParam);
+        // If named parameter not found, skip this argument
+        if (paramIndex === -1) {
+          groupArgsCount += 1;
+          continue;
+        }
+      }
+      
+      const arg = args[paramIndex] || '';
       const finalArg = {};
       const groupArgStart = new vscode.Position(groupArg.start.line, groupArg.start.character);
       const groupArgEnd = new vscode.Position(groupArg.end.line, groupArg.end.character);
@@ -219,11 +258,11 @@ const getHints = async (functionDictionary, functionGroup, editor) => {
 
       // If key is bigger than the arguments length, check if there was a rest
       // parameter before and name it appropriately
-      if (index >= argsLength) {
+      if (paramIndex >= argsLength) {
         const argLabel = `${
           showTypes === 'disabled' ? '' : `${restParameterType} `
         }${restParameterName}`.trim();
-        finalArg.name = `${argLabel}[${index - restParameterIndex}]`;
+        finalArg.name = `${argLabel}[${paramIndex - restParameterIndex}]`;
       }
 
       /**
