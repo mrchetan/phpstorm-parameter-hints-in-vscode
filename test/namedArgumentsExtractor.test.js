@@ -179,7 +179,6 @@ describe('parameterExtractor - Named Arguments', () => {
       }
 
       expect(hints).to.have.lengthOf(6);
-      
       // Mixed positional and named: show hints only for positional arguments
       expect(hints[5]).to.have.lengthOf(1);
       expect(hints[5][0].text).to.equal('name:');
