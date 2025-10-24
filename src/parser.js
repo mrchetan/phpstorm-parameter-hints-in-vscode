@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 const engine = require('php-parser');
 const { removeShebang } = require('./utils');
 
@@ -10,7 +9,7 @@ class Parser {
   constructor(isPhp7 = true) {
     this.functionGroups = [];
     // @ts-ignore
-    // eslint-disable-next-line new-cap
+
     this.parser = new engine({
       parser: {
         extractDoc: true,
@@ -42,7 +41,7 @@ class Parser {
     if (['call', 'new'].includes(ast.kind)) {
       try {
         this.parseArguments(ast);
-        // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-unused-vars
       } catch (err) {}
     }
 
@@ -52,11 +51,11 @@ class Parser {
         if (node instanceof Object) {
           try {
             this.crawl(node);
-            // eslint-disable-next-line no-empty
+             // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
       });
-      // eslint-disable-next-line no-empty
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {}
   }
 

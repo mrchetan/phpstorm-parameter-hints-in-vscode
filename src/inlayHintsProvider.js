@@ -16,7 +16,7 @@ class PhpParameterInlayHintsProvider {
     this.onDidChangeInlayHints = this._onDidChangeInlayHints.event;
     // Cache function signatures to avoid redundant lookups across hint provider calls
     this.functionDictionary = new Map();
-    // Track in-progress requests to prevent overlapping processing
+    // Track active requests to prevent concurrent processing
     this.activeRequests = new Map();
   }
 
@@ -25,6 +25,11 @@ class PhpParameterInlayHintsProvider {
    */
   refresh() {
     this.functionDictionary.clear();
+    // Cancel all active requests on refresh
+    for (const [, cancellationSource] of this.activeRequests) {
+      cancellationSource.cancel();
+    }
+    this.activeRequests.clear();
     this._onDidChangeInlayHints.fire();
   }
 
@@ -47,105 +52,110 @@ class PhpParameterInlayHintsProvider {
       return [];
     }
 
-    const text = document.getText();
     const uriStr = document.uri.toString();
-    const activeEditor = vscode.window.activeTextEditor;
 
-    if (!activeEditor || activeEditor.document !== document) {
-      return [];
+    // Cancel any existing request for this document
+    if (this.activeRequests.has(uriStr)) {
+      const existingCancellation = this.activeRequests.get(uriStr);
+      existingCancellation.cancel();
+      this.activeRequests.delete(uriStr);
     }
 
-    // Cancel any previous request for this document
-    const existingRequest = this.activeRequests.get(uriStr);
-    if (existingRequest) {
-      existingRequest.cancel = true;
-    }
+    // Create a new cancellation token source for this request
+    const cancellationSource = new vscode.CancellationTokenSource();
+    this.activeRequests.set(uriStr, cancellationSource);
 
-    // Create a new request tracker
-    const currentRequest = { cancel: false };
-    this.activeRequests.set(uriStr, currentRequest);
-
-    let functionGroups = [];
-    const hintOnlyLine = config.get('hintOnlyLine');
-    const hintOnlyLiterals = config.get('hintOnlyLiterals');
-    const hintOnlyVisibleRanges = config.get('hintOnlyVisibleRanges');
+    // Combine the provided token with our internal cancellation
+    const checkCancellation = () => {
+      return token.isCancellationRequested || cancellationSource.token.isCancellationRequested;
+    };
 
     try {
-      functionGroups = await this.functionGroupsFacade.get(uriStr, text);
-    } catch (err) {
-      printError(err);
-      this.activeRequests.delete(uriStr);
-      return [];
-    }
+      const text = document.getText();
+      const activeEditor = vscode.window.activeTextEditor;
 
-    // Check if this request was cancelled while parsing
-    if (currentRequest.cancel || token.isCancellationRequested) {
-      this.activeRequests.delete(uriStr);
-      return [];
-    }
-
-    if (!functionGroups.length) {
-      this.activeRequests.delete(uriStr);
-      return [];
-    }
-
-    // Apply middlewares to filter function groups
-    const finalFunctionGroups = await new Pipeline()
-      .pipe(
-        [onlyLiterals, hintOnlyLiterals],
-        [onlyVisibleRanges, activeEditor, hintOnlyVisibleRanges],
-        [onlySelection, activeEditor, hintOnlyLine]
-      )
-      .process(functionGroups);
-
-    // Check for cancellation after filtering
-    if (currentRequest.cancel || token.isCancellationRequested) {
-      this.activeRequests.delete(uriStr);
-      return [];
-    }
-
-    // Convert to InlayHints
-    const inlayHints = [];
-    const maxHintsPerRequest = 500; // Limit number of hints to prevent excessive API calls
-
-    for (const functionGroup of finalFunctionGroups) {
-      if (currentRequest.cancel || token.isCancellationRequested) {
-        break;
+      if (!activeEditor || activeEditor.document !== document) {
+        return [];
       }
 
-      // Stop processing if we've reached the limit
-      if (inlayHints.length >= maxHintsPerRequest) {
-        break;
+      if (checkCancellation()) {
+        return [];
       }
 
-      let hints;
+      let functionGroups = [];
+      const hintOnlyLine = config.get('hintOnlyLine');
+      const hintOnlyLiterals = config.get('hintOnlyLiterals');
+      const hintOnlyVisibleRanges = config.get('hintOnlyVisibleRanges');
+
       try {
-        hints = await getHints(this.functionDictionary, functionGroup, activeEditor);
+        functionGroups = await this.functionGroupsFacade.get(uriStr, text);
       } catch (err) {
-        // Skip this function group if we can't get hints
-        continue;
+        printError(err);
+        return [];
       }
 
-      if (hints && hints.length) {
-        for (const hint of hints) {
-          const inlayHint = new vscode.InlayHint(
-            hint.range.start,
-            hint.text,
-            vscode.InlayHintKind.Parameter
-          );
+      if (checkCancellation()) {
+        return [];
+      }
 
-          // Add padding for better readability
-          inlayHint.paddingRight = true;
+      if (!functionGroups.length) {
+        return [];
+      }
 
-          inlayHints.push(inlayHint);
+      // Apply middlewares to filter function groups
+      const finalFunctionGroups = await new Pipeline()
+        .pipe(
+          [onlyLiterals, hintOnlyLiterals],
+          [onlyVisibleRanges, activeEditor, hintOnlyVisibleRanges],
+          [onlySelection, activeEditor, hintOnlyLine]
+        )
+        .process(functionGroups);
+
+      if (checkCancellation()) {
+        return [];
+      }
+
+      // Convert to InlayHints
+      const inlayHints = [];
+
+      for (const functionGroup of finalFunctionGroups) {
+        if (checkCancellation()) {
+          break;
+        }
+
+        let hints;
+        try {
+          hints = await getHints(this.functionDictionary, functionGroup, activeEditor);
+          // eslint-disable-next-line no-unused-vars
+        } catch (err) {
+          // Skip this function group if we can't get hints
+          continue;
+        }
+
+        if (hints && hints.length) {
+          for (const hint of hints) {
+            const inlayHint = new vscode.InlayHint(
+              hint.range.start,
+              hint.text,
+              vscode.InlayHintKind.Parameter
+            );
+
+            // Add padding for better readability
+            inlayHint.paddingRight = true;
+
+            inlayHints.push(inlayHint);
+          }
         }
       }
+
+      return inlayHints;
+    } finally {
+      // Clean up this request from active requests
+      if (this.activeRequests.get(uriStr) === cancellationSource) {
+        this.activeRequests.delete(uriStr);
+      }
+      cancellationSource.dispose();
     }
-
-    // Clean up the request tracker
-    this.activeRequests.delete(uriStr);
-
-    return inlayHints;
   }
 }
 

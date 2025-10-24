@@ -102,7 +102,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 
@@ -123,7 +123,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 
@@ -145,7 +145,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 
@@ -206,7 +206,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 
@@ -225,7 +225,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 
@@ -288,7 +288,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 
@@ -307,7 +307,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 
@@ -369,7 +369,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 
@@ -385,7 +385,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 
@@ -449,7 +449,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 
@@ -468,7 +468,7 @@ describe('parameterExtractor', () => {
           const functionGroup = functionGroups[index];
           try {
             hints.push(await getHints(functionDictionary, functionGroup, editor));
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-unused-vars
           } catch (err) {}
         }
 

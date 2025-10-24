@@ -39,7 +39,7 @@ const filterOnlyTypeLabels = args =>
 
 const resolveTypeHint = (showTypeState, args, showTypes) => {
   const newArgs = args.map(arg => {
-    // eslint-disable-next-line prefer-const
+     
     let [type, label] = arg.split(' ');
 
     if (!isDefined(label)) {
