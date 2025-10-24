@@ -2,7 +2,7 @@
   "name": "phpstorm-parameter-hints-in-vscode",
   "displayName": "PhpStorm Parameter Hints in VScode",
   "description": "PhpStorm parameter hint for VS Code",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "publisher": "MrChetan",
   "engines": {
     "vscode": "^1.104.0"
@@ -173,80 +173,7 @@
             "type": "boolean",
             "description": "True if php version is 7.0+, false otherwise",
             "default": true
-          },
-          "phpParameterHint.opacity": {
-            "type": "number",
-            "default": 0.4
-          },
-          "phpParameterHint.borderRadius": {
-            "type": "number",
-            "default": 5
-          },
-          "phpParameterHint.fontWeight": {
-            "type": "number",
-            "default": 400,
-            "enum": [
-              100,
-              200,
-              300,
-              400,
-              500,
-              600,
-              700,
-              800,
-              900
-            ],
-            "description": "Hints styling of font-weight CSS property"
-          },
-          "phpParameterHint.fontStyle": {
-            "type": "string",
-            "default": "italic",
-            "enum": [
-              "normal",
-              "italic"
-            ],
-            "description": "Hints styling of font-style CSS property"
-          },
-          "phpParameterHint.margin": {
-            "type": "number",
-            "default": 2,
-            "description": "Hints styling of margin CSS property"
-          },
-          "phpParameterHint.verticalPadding": {
-            "type": "number",
-            "default": 1,
-            "description": "Top and bottom padding of the hints"
-          },
-          "phpParameterHint.horizontalPadding": {
-            "type": "number",
-            "default": 4,
-            "description": "Right and left padding of the hints"
-          },
-          "phpParameterHint.fontSize": {
-            "type": "number",
-            "default": 12,
-            "description": "Hints styling of font size CSS property"
           }
-        }
-      }
-    ],
-    "colors": [
-      {
-        "id": "phpParameterHint.hintForeground",
-        "description": "Specifies the foreground color for the hints",
-        "defaults": {
-          "dark": "#8D9BD6",
-          "light": "#1a0000",
-          "highContrast": "#8D9BD6"
-        }
-      },
-      {
-        "id": "phpParameterHint.hintBackground",
-        "description": "Specifies the background color for the hints",
-        "defaults": {
-          "dark": "#292D3E",
-          "light": "#FFFFFF",
-          "highContrast": "#292D3E"
         }
       }
     ],

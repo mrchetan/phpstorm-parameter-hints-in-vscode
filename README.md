@@ -20,19 +20,9 @@ Inserts parameter hints(type, name or both) into function calls to easily unders
 
 ## Settings
 
-**Note:** Styling options (margin, padding, fontWeight, borderRadius, opacity, fontStyle, fontSize) are deprecated as of v2.1.0. The extension now uses VS Code's native Inlay Hints API, and styling is controlled by your editor theme settings.
-
 | Name                                      | Description                                                                                                                                           | Default  |
 | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | `phpParameterHint.enabled`                | Enable PHP Parameter Hint                                                                                                                             | true     |
-| `phpParameterHint.margin`                 | ~~Hints styling of margin CSS property~~ (deprecated)                                                                                                 | 2        |
-| `phpParameterHint.verticalPadding`        | ~~Top and bottom padding of the hints(px)~~ (deprecated)                                                                                              | 1        |
-| `phpParameterHint.horizontalPadding`      | ~~Right and left padding of the hints(px)~~ (deprecated)                                                                                              | 4        |
-| `phpParameterHint.fontWeight`             | ~~Hints styling of font-weight CSS property~~ (deprecated)                                                                                            | "400"    |
-| `phpParameterHint.borderRadius`           | ~~Hints styling of border-radius CSS property in px~~ (deprecated)                                                                                    | 5        |
-| `phpParameterHint.opacity`                | ~~Hints styling of opacity CSS property~~ (deprecated)                                                                                                | 0.4      |
-| `phpParameterHint.fontStyle`              | ~~Hints styling of font-style CSS property~~ (deprecated)                                                                                             | "italic" |
-| `phpParameterHint.fontSize`               | ~~Hints styling of font size CSS property~~ (deprecated)                                                                                              | 12       |
 | `phpParameterHint.onSave`                 | Create parameter hints on document save                                                                                                               | true     |
 | `phpParameterHint.saveDelay`              | Delay in ms for on document save run                                                                                                                  | 250      |
 | `phpParameterHint.onChange`               | Create parameter hints on document change                                                                                                             | true    |
@@ -66,7 +56,7 @@ Inserts parameter hints(type, name or both) into function calls to easily unders
 
 ## Colors
 
-**Note:** As of v2.1.0, color customization is deprecated. The extension now uses VS Code's native inlay hints styling, which is controlled by the `editorInlayHint.*` theme colors. You can customize the appearance using:
+**Note:** As of v2.2.0, the extension uses VS Code's native inlay hints styling. Customize the appearance using:
 
 ```json
 "workbench.colorCustomizations": {
@@ -75,12 +65,11 @@ Inserts parameter hints(type, name or both) into function calls to easily unders
 }
 ```
 
-The legacy color settings below are deprecated:
-
-| Name                              | Description                                 |
-| --------------------------------- | ------------------------------------------- |
-| `phpParameterHint.hintForeground` | ~~Specifies the foreground color for the hint~~ (deprecated) |
-| `phpParameterHint.hintBackground` | ~~Specifies the background color for the hint~~ (deprecated) |
+You can also use VS Code's native inlay hints settings:
+```json
+"editor.inlayHints.fontSize": 12,
+"editor.inlayHints.fontFamily": "monospace"
+```
 
 
 **Enjoy Chetan's Extension Pack!**
