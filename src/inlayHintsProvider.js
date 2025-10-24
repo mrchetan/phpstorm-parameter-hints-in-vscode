@@ -12,6 +12,15 @@ const getHints = require('./parameterExtractor');
 class PhpParameterInlayHintsProvider {
   constructor() {
     this.functionGroupsFacade = new FunctionGroupsFacade(new CacheService());
+    this._onDidChangeInlayHints = new vscode.EventEmitter();
+    this.onDidChangeInlayHints = this._onDidChangeInlayHints.event;
+  }
+
+  /**
+   * Refresh all inlay hints
+   */
+  refresh() {
+    this._onDidChangeInlayHints.fire();
   }
 
   /**

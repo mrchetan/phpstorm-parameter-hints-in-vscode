@@ -32,11 +32,14 @@ function activate(context) {
 
   /**
    * Refresh inlay hints for the active editor
+   * Note: VS Code automatically refreshes inlay hints when the provider's
+   * onDidChangeInlayHints event is fired or when the document changes.
+   * No manual refresh command is needed.
    */
   function refreshInlayHints() {
-    if (activeEditor && activeEditor.document.languageId === 'php') {
-      // Trigger a refresh of inlay hints by executing the VS Code command
-      vscode.commands.executeCommand('editor.action.inlayHints.refresh');
+    // Fire the event to notify VS Code to refresh inlay hints
+    if (inlayHintsProvider) {
+      inlayHintsProvider.refresh();
     }
   }
 
@@ -53,9 +56,9 @@ function activate(context) {
 
     // Clear old decorations since we're using inlay hints now
     activeEditor.setDecorations(hintDecorationType, []);
-    
+
     const isEnabled = vscode.workspace.getConfiguration('phpParameterHint').get('enabled');
-    
+
     // Refresh inlay hints when settings change or when explicitly triggered
     if (isEnabled) {
       refreshInlayHints();
