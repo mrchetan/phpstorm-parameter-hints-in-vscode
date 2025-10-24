@@ -120,13 +120,13 @@ describe('parameterExtractor - Named Arguments', () => {
         const functionGroup = functionGroups[index];
         try {
           hints.push(await getHints(functionDictionary, functionGroup, editor));
-          // eslint-disable-next-line no-empty
+          // eslint-disable-next-line no-unused-vars
         } catch (err) {}
       }
 
       expect(hints).to.have.lengthOf(5);
       expect(hints[0]).to.have.lengthOf(3);
-      
+
       // Verify positional arguments work as before
       expect(hints[0][0].text).to.equal(expectedHints[0][0].text);
       expect(hints[0][1].text).to.equal(expectedHints[0][1].text);
@@ -141,13 +141,13 @@ describe('parameterExtractor - Named Arguments', () => {
         const functionGroup = functionGroups[index];
         try {
           hints.push(await getHints(functionDictionary, functionGroup, editor));
-          // eslint-disable-next-line no-empty
+          // eslint-disable-next-line no-unused-vars
         } catch (err) {}
       }
 
       expect(hints).to.have.lengthOf(5);
       expect(hints[1]).to.have.lengthOf(3);
-      
+
       // Verify named arguments in order
       expect(hints[1][0].text).to.equal('name:');
       expect(hints[1][1].text).to.equal('greeting:');
@@ -162,13 +162,13 @@ describe('parameterExtractor - Named Arguments', () => {
         const functionGroup = functionGroups[index];
         try {
           hints.push(await getHints(functionDictionary, functionGroup, editor));
-          // eslint-disable-next-line no-empty
+          // eslint-disable-next-line no-unused-vars
         } catch (err) {}
       }
 
       expect(hints).to.have.lengthOf(5);
       expect(hints[2]).to.have.lengthOf(3);
-      
+
       // Verify named arguments match correctly even in different order
       // The hint for the first argument (greeting: "Howdy") should still show 'greeting:'
       expect(hints[2][0].text).to.equal('greeting:');
@@ -186,13 +186,13 @@ describe('parameterExtractor - Named Arguments', () => {
         const functionGroup = functionGroups[index];
         try {
           hints.push(await getHints(functionDictionary, functionGroup, editor));
-          // eslint-disable-next-line no-empty
+          // eslint-disable-next-line no-unused-vars
         } catch (err) {}
       }
 
       expect(hints).to.have.lengthOf(5);
       expect(hints[3]).to.have.lengthOf(3);
-      
+
       // Verify mixed order: name, times, greeting
       expect(hints[3][0].text).to.equal('name:');
       expect(hints[3][1].text).to.equal('times:');
@@ -207,13 +207,13 @@ describe('parameterExtractor - Named Arguments', () => {
         const functionGroup = functionGroups[index];
         try {
           hints.push(await getHints(functionDictionary, functionGroup, editor));
-          // eslint-disable-next-line no-empty
+          // eslint-disable-next-line no-unused-vars
         } catch (err) {}
       }
 
       expect(hints).to.have.lengthOf(5);
       expect(hints[4]).to.have.lengthOf(1);
-      
+
       // Only name is provided
       expect(hints[4][0].text).to.equal('name:');
     });

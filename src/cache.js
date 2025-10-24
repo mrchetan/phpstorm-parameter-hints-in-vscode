@@ -1,4 +1,3 @@
-const LZUTF8 = require('lzutf8');
 const NodeCache = require('node-cache');
 const { isDefined, getCopyFunc } = require('./utils');
 
@@ -31,22 +30,34 @@ class CacheService {
    */
   setFunctionGroups(uri, text, functionGroups) {
     return new Promise(resolve => {
-      LZUTF8.compressAsync(text, undefined, (result, error) => {
-        if (isDefined(error) || !isDefined(result)) {
-          // Fail silently without adding the data to cache
-          resolve();
-          return;
-        }
+      // Use a simple hash of the text instead of compressing it
+      // This is much faster and sufficient for cache validation
+      const textHash = this._hashCode(text);
 
-        const data = {
-          compressedText: result,
-          // @ts-ignore
-          functionGroups: copy(functionGroups)
-        };
-        this.cache.set(uri, data);
-        resolve();
-      });
+      const data = {
+        textHash: textHash,
+        textLength: text.length,
+        // @ts-ignore
+        functionGroups: copy(functionGroups)
+      };
+      this.cache.set(uri, data);
+      resolve();
     });
+  }
+
+  /**
+   * Simple hash function for cache validation
+   * @param {string} str
+   * @returns {number}
+   */
+  _hashCode(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
   }
 
   /**
@@ -86,26 +97,30 @@ class CacheService {
         return;
       }
 
-      const { compressedText } = this.cache.get(uri);
+      const cachedData = this.cache.get(uri);
 
-      if (!isDefined(compressedText)) {
+      if (!isDefined(cachedData)) {
         resolve(false);
         return;
       }
 
-      LZUTF8.decompressAsync(compressedText, undefined, (cachedText, error) => {
-        if (isDefined(error) || !isDefined(cachedText)) {
-          resolve(false);
-          return;
-        }
+      // Quick checks first: length and hash
+      if (cachedData.textLength !== text.length) {
+        resolve(false);
+        return;
+      }
 
-        if (text !== cachedText) {
-          resolve(false);
-          return;
-        }
+      const textHash = this._hashCode(text);
+      if (cachedData.textHash !== textHash) {
+        resolve(false);
+        return;
+      }
 
-        resolve(true);
-      });
+      // If both length and hash match, consider it valid
+      // This is much faster than decompressing and comparing strings,
+      // but note that hash collisions, while rare, could cause the cache to incorrectly validate changed content.
+      // This is a trade-off between performance and accuracy.
+      resolve(true);
     });
   }
 }

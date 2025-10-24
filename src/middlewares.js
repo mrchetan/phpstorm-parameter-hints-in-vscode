@@ -1,6 +1,6 @@
 const { Position, Range } = require('vscode');
 
-/* eslint-disable no-param-reassign */
+ 
 const literals = [
   'boolean',
   'number',

@@ -1,8 +1,6 @@
 const vscode = require('vscode');
 const debounce = require('lodash.debounce');
 const { Commands } = require('./commands');
-const { CacheService } = require('./cache');
-const { FunctionGroupsFacade } = require('./functionGroupsFacade');
 const PhpParameterInlayHintsProvider = require('./inlayHintsProvider');
 
 const initialNrTries = 3;
@@ -14,7 +12,6 @@ const initialNrTries = 3;
 function activate(context) {
   let timeout;
   let activeEditor = vscode.window.activeTextEditor;
-  const functionGroupsFacade = new FunctionGroupsFacade(new CacheService());
 
   // Register the InlayHintsProvider for native inlay hints support
   // This approach respects word wrap and works better with VS Code's native features
@@ -117,21 +114,22 @@ function activate(context) {
     ) {
       triggerUpdateDecorations(0);
     }
-  }, 333);
+  }, 700); // Increased from 333ms to 700ms
   vscode.window.onDidChangeTextEditorVisibleRanges(
     handleVisibleRangesChange,
     null,
     context.subscriptions
   );
+  const handleSelectionChange = debounce(() => {
+    if (
+      activeEditor &&
+      vscode.workspace.getConfiguration('phpParameterHint').get('hintOnlyLine')
+    ) {
+      triggerUpdateDecorations(0);
+    }
+  }, 150); // Add debounce to reduce rapid selection change processing
   vscode.window.onDidChangeTextEditorSelection(
-    () => {
-      if (
-        activeEditor &&
-        vscode.workspace.getConfiguration('phpParameterHint').get('hintOnlyLine')
-      ) {
-        triggerUpdateDecorations(0);
-      }
-    },
+    handleSelectionChange,
     null,
     context.subscriptions
   );
@@ -146,7 +144,7 @@ function activate(context) {
           vscode.workspace.getConfiguration('phpParameterHint').get('changeDelay')
         );
       }
-    }, 333),
+    }, 700), // Increased from 333ms to 700ms
     null,
     context.subscriptions
   );

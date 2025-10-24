@@ -39,7 +39,7 @@ const filterOnlyTypeLabels = args =>
 
 const resolveTypeHint = (showTypeState, args, showTypes) => {
   const newArgs = args.map(arg => {
-    // eslint-disable-next-line prefer-const
+     
     let [type, label] = arg.split(' ');
 
     if (!isDefined(label)) {
@@ -147,26 +147,34 @@ const getHints = async (functionDictionary, functionGroup, editor) => {
   if (functionGroup.name && functionDictionary.has(functionGroup.name)) {
     args = functionDictionary.get(functionGroup.name);
   } else {
-    // First try to get the args from the Signature provider
-    args = await signature.getArgs(
-      editor,
-      functionGroup.args[0].start.line,
-      functionGroup.args[0].start.character,
-      showTypes
-    );
+    try {
+      // First try to get the args from the Signature provider
+      args = await signature.getArgs(
+        editor,
+        functionGroup.args[0].start.line,
+        functionGroup.args[0].start.character,
+        showTypes
+      );
 
-    if (!args.length) {
-      // Fallback on Hover provider
-      args = await hover.getArgs(editor, functionGroup.line, functionGroup.character, showTypes);
-    }
+      if (!args.length) {
+        // Fallback on Hover provider
+        args = await hover.getArgs(editor, functionGroup.line, functionGroup.character, showTypes);
+      }
 
-    if (args.length && showTypes !== 'disabled') {
-      args = resolveTypeHint(showTypes, args, showTypes);
-    }
+      if (args.length && showTypes !== 'disabled') {
+        args = resolveTypeHint(showTypes, args, showTypes);
+      }
 
-    // Memoise parameters group for this function
-    if (functionGroup.name && args && args.length) {
-      functionDictionary.set(functionGroup.name, args);
+      // Memoise parameters group for this function
+      if (functionGroup.name && args && args.length) {
+        functionDictionary.set(functionGroup.name, args);
+      }
+    } catch (err) {
+      // If VSCode API fails, cache an empty result to avoid repeated failures
+      if (functionGroup.name) {
+        functionDictionary.set(functionGroup.name, []);
+      }
+      throw err;
     }
   }
 
