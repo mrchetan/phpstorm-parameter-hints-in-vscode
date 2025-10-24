@@ -14,7 +14,7 @@ class Hints {
       range,
       renderOptions: {
         before: {
-          opacity: config.get('opacity'),
+          opacity: `${config.get('opacity')}`,
           color: new ThemeColor('phpParameterHint.hintForeground'),
           contentText: message,
           backgroundColor: new ThemeColor('phpParameterHint.hintBackground'),

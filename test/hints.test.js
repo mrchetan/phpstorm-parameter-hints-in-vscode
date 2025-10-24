@@ -92,14 +92,14 @@ describe('hints', () => {
         }
       }
     } = Hints.paramHint(hint.text, hint.range);
-    expect(opacity).to.equal(expectedOpacity);
+    expect(opacity).to.equal(`${expectedOpacity}`);
     expect(color).to.deep.equal(expectedColor);
     expect(backgroundColor).to.deep.equal(expectedBackgroundColor);
     expect(fontStyle).to.equal(expectedFontStyle);
     expect(fontWeight).to.equal(`${expectedFontWeight};font-size:${expectedFontSize}px;`);
     expect(contentText).to.equal(hint.text);
     expect(borderRadius).to.equal(`${expectedBorderRadius}px`);
-    expect(opacity).to.equal(expectedOpacity);
+    expect(opacity).to.equal(`${expectedOpacity}`);
     expect(margin).to.equal(
       `0px ${expectedMargin +
         1}px 0px ${expectedMargin}px;padding: ${expectedVerticalPadding}px ${expectedHorizontalPadding}px;`
