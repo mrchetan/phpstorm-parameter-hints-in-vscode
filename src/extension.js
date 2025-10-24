@@ -37,9 +37,7 @@ function activate(context) {
    */
   function refreshInlayHints() {
     // Fire the event to notify VS Code to refresh inlay hints
-    if (inlayHintsProvider) {
-      inlayHintsProvider.refresh();
-    }
+    inlayHintsProvider.refresh();
   }
 
   /**
