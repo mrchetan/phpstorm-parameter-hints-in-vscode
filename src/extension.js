@@ -51,20 +51,15 @@ function activate(context) {
       return;
     }
 
-    const { document: currentDocument } = activeEditor;
-    const isEnabled = vscode.workspace.getConfiguration('phpParameterHint').get('enabled');
-
-    if (!isEnabled) {
-      // Clear old decorations if they exist
-      activeEditor.setDecorations(hintDecorationType, []);
-      return;
-    }
-
     // Clear old decorations since we're using inlay hints now
     activeEditor.setDecorations(hintDecorationType, []);
     
-    // Refresh inlay hints instead
-    refreshInlayHints();
+    const isEnabled = vscode.workspace.getConfiguration('phpParameterHint').get('enabled');
+    
+    // Refresh inlay hints when settings change or when explicitly triggered
+    if (isEnabled) {
+      refreshInlayHints();
+    }
   }
 
   /**
