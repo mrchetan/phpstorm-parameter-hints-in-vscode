@@ -35,6 +35,7 @@ describe('parameterExtractor - Named Arguments', () => {
       // Line 16: greet(greeting: "Howdy", name: "Bob", times: 1) - named different order (no hints)
       // Line 19: greet(name: "Alice", times: 2, greeting: "Greetings") - named mixed order (no hints)
       // Line 22: greet(name: "Charlie") - only some named (no hints)
+      // Line 25: greet("Dave", greeting: "Aloha") - mixed positional and named (show hints for positional only)
       expectedHints = [
         // Traditional positional - greet("John", "Hi", 2) - should show hints
         [
@@ -58,7 +59,14 @@ describe('parameterExtractor - Named Arguments', () => {
         // Named mixed order - no hints since names are already explicit
         [],
         // Only some named - no hints since names are already explicit
-        []
+        [],
+        // Mixed positional and named - show hints for positional only
+        [
+          {
+            text: 'name:',
+            range: new Range(new Position(24, 6), new Position(24, 12))
+          }
+        ]
       ];
     });
 
@@ -80,7 +88,7 @@ describe('parameterExtractor - Named Arguments', () => {
         } catch (err) {}
       }
 
-      expect(hints).to.have.lengthOf(5);
+      expect(hints).to.have.lengthOf(6);
       expect(hints[0]).to.have.lengthOf(3);
 
       // Verify positional arguments work as before
@@ -101,7 +109,7 @@ describe('parameterExtractor - Named Arguments', () => {
         } catch (err) {}
       }
 
-      expect(hints).to.have.lengthOf(5);
+      expect(hints).to.have.lengthOf(6);
       
       // Named arguments should not show hints since parameter names are already explicit
       expect(hints[1]).to.have.lengthOf(0);
@@ -119,7 +127,7 @@ describe('parameterExtractor - Named Arguments', () => {
         } catch (err) {}
       }
 
-      expect(hints).to.have.lengthOf(5);
+      expect(hints).to.have.lengthOf(6);
       
       // Named arguments should not show hints since parameter names are already explicit
       expect(hints[2]).to.have.lengthOf(0);
@@ -137,7 +145,7 @@ describe('parameterExtractor - Named Arguments', () => {
         } catch (err) {}
       }
 
-      expect(hints).to.have.lengthOf(5);
+      expect(hints).to.have.lengthOf(6);
       
       // Named arguments should not show hints since parameter names are already explicit
       expect(hints[3]).to.have.lengthOf(0);
@@ -155,10 +163,29 @@ describe('parameterExtractor - Named Arguments', () => {
         } catch (err) {}
       }
 
-      expect(hints).to.have.lengthOf(5);
+      expect(hints).to.have.lengthOf(6);
       
       // Named arguments should not show hints since parameter names are already explicit
       expect(hints[4]).to.have.lengthOf(0);
+    });
+
+    it('should show hints only for positional arguments in mixed calls', async () => {
+      await vscode.workspace.getConfiguration('phpParameterHint').update('hintTypeName', 0, true);
+      const hints = [];
+
+      for (let index = 0; index < functionGroupsLen; index += 1) {
+        const functionGroup = functionGroups[index];
+        try {
+          hints.push(await getHints(functionDictionary, functionGroup, editor));
+          // eslint-disable-next-line no-unused-vars
+        } catch (err) {}
+      }
+
+      expect(hints).to.have.lengthOf(6);
+      
+      // Mixed positional and named: show hints only for positional arguments
+      expect(hints[5]).to.have.lengthOf(1);
+      expect(hints[5][0].text).to.equal('name:');
     });
   });
 });
