@@ -75,6 +75,13 @@ class Parser {
 
     obj.arguments.forEach((arg, index) => {
       let argument = arg;
+      let namedArgument = null;
+
+      // Check if this is a named argument (PHP 8+)
+      if (argument.kind === 'namedargument') {
+        namedArgument = argument.name;
+        argument = argument.value;
+      }
 
       while (argument.kind === 'bin' && argument.left) {
         argument = argument.left;
@@ -104,7 +111,8 @@ class Parser {
           character: parseInt(endLoc.column, 10)
         },
         name: argument.name || '',
-        kind: argKind
+        kind: argKind,
+        namedParam: namedArgument
       });
     });
 
