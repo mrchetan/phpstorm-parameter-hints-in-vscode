@@ -20,3 +20,6 @@ greet(name: "Alice", times: 2, greeting: "Greetings");
 
 // Only some named arguments
 greet(name: "Charlie");
+
+// Mixed positional and named arguments
+greet("Dave", greeting: "Aloha");
