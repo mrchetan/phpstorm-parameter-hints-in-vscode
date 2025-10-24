@@ -14,12 +14,15 @@ class PhpParameterInlayHintsProvider {
     this.functionGroupsFacade = new FunctionGroupsFacade(new CacheService());
     this._onDidChangeInlayHints = new vscode.EventEmitter();
     this.onDidChangeInlayHints = this._onDidChangeInlayHints.event;
+    // Cache function signatures to avoid redundant lookups across hint provider calls
+    this.functionDictionary = new Map();
   }
 
   /**
-   * Refresh all inlay hints
+   * Refresh all inlay hints and clear the function signature cache
    */
   refresh() {
+    this.functionDictionary.clear();
     this._onDidChangeInlayHints.fire();
   }
 
@@ -77,7 +80,6 @@ class PhpParameterInlayHintsProvider {
 
     // Convert to InlayHints
     const inlayHints = [];
-    const functionDictionary = new Map();
 
     for (const functionGroup of finalFunctionGroups) {
       if (token.isCancellationRequested) {
@@ -86,7 +88,7 @@ class PhpParameterInlayHintsProvider {
 
       let hints;
       try {
-        hints = await getHints(functionDictionary, functionGroup, activeEditor);
+        hints = await getHints(this.functionDictionary, functionGroup, activeEditor);
       } catch (err) {
         // Skip this function group if we can't get hints
         continue;
