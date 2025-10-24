@@ -7,6 +7,7 @@ const { onlyLiterals, onlySelection, onlyVisibleRanges } = require('./middleware
 const { Pipeline } = require('./pipeline');
 const { CacheService } = require('./cache');
 const { FunctionGroupsFacade } = require('./functionGroupsFacade');
+const PhpParameterInlayHintsProvider = require('./inlayHintsProvider');
 
 const hintDecorationType = vscode.window.createTextEditorDecorationType({});
 const initialNrTries = 3;
@@ -20,8 +21,28 @@ function activate(context) {
   let activeEditor = vscode.window.activeTextEditor;
   const functionGroupsFacade = new FunctionGroupsFacade(new CacheService());
 
+  // Register the InlayHintsProvider for native inlay hints support
+  // This approach respects word wrap and works better with VS Code's native features
+  const inlayHintsProvider = new PhpParameterInlayHintsProvider();
+  const inlayHintsDisposable = vscode.languages.registerInlayHintsProvider(
+    { language: 'php' },
+    inlayHintsProvider
+  );
+  context.subscriptions.push(inlayHintsDisposable);
+
+  /**
+   * Refresh inlay hints for the active editor
+   */
+  function refreshInlayHints() {
+    if (activeEditor && activeEditor.document.languageId === 'php') {
+      // Trigger a refresh of inlay hints by executing the VS Code command
+      vscode.commands.executeCommand('editor.action.inlayHints.refresh');
+    }
+  }
+
   /**
    * Get the PHP code then parse it and create parameter hints
+   * This is kept for backwards compatibility but now triggers inlay hints refresh
    */
   async function updateDecorations() {
     timeout = undefined;
@@ -31,50 +52,19 @@ function activate(context) {
     }
 
     const { document: currentDocument } = activeEditor;
-    const uriStr = currentDocument.uri.toString();
     const isEnabled = vscode.workspace.getConfiguration('phpParameterHint').get('enabled');
 
     if (!isEnabled) {
+      // Clear old decorations if they exist
       activeEditor.setDecorations(hintDecorationType, []);
-
       return;
     }
 
-    const text = currentDocument.getText();
-    let functionGroups = [];
-    const hintOnChange = vscode.workspace.getConfiguration('phpParameterHint').get('onChange');
-    const hintOnlyLine = vscode.workspace.getConfiguration('phpParameterHint').get('hintOnlyLine');
-    const hintOnlyLiterals = vscode.workspace
-      .getConfiguration('phpParameterHint')
-      .get('hintOnlyLiterals');
-    const hintOnlyVisibleRanges = vscode.workspace
-      .getConfiguration('phpParameterHint')
-      .get('hintOnlyVisibleRanges');
-
-    try {
-      functionGroups = await functionGroupsFacade.get(uriStr, text);
-    } catch (err) {
-      printError(err);
-
-      if (hintOnChange || hintOnlyLine) {
-        return;
-      }
-    }
-
-    if (!functionGroups.length) {
-      activeEditor.setDecorations(hintDecorationType, []);
-
-      return;
-    }
-
-    const finalFunctionGroups = await new Pipeline()
-      .pipe(
-        [onlyLiterals, hintOnlyLiterals],
-        [onlyVisibleRanges, activeEditor, hintOnlyVisibleRanges],
-        [onlySelection, activeEditor, hintOnlyLine]
-      )
-      .process(functionGroups);
-    await update(activeEditor, finalFunctionGroups);
+    // Clear old decorations since we're using inlay hints now
+    activeEditor.setDecorations(hintDecorationType, []);
+    
+    // Refresh inlay hints instead
+    refreshInlayHints();
   }
 
   /**
