@@ -110,7 +110,6 @@ describe('parameterExtractor - Named Arguments', () => {
       }
 
       expect(hints).to.have.lengthOf(6);
-      
       // Named arguments should not show hints since parameter names are already explicit
       expect(hints[1]).to.have.lengthOf(0);
     });
