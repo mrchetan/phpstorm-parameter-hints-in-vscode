@@ -1,10 +1,6 @@
 const vscode = require('vscode');
 const debounce = require('lodash.debounce');
 const { Commands } = require('./commands');
-const { printError } = require('./printer');
-const { update } = require('./update');
-const { onlyLiterals, onlySelection, onlyVisibleRanges } = require('./middlewares');
-const { Pipeline } = require('./pipeline');
 const { CacheService } = require('./cache');
 const { FunctionGroupsFacade } = require('./functionGroupsFacade');
 const PhpParameterInlayHintsProvider = require('./inlayHintsProvider');
