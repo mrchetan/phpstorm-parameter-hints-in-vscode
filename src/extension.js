@@ -9,7 +9,6 @@ const { CacheService } = require('./cache');
 const { FunctionGroupsFacade } = require('./functionGroupsFacade');
 const PhpParameterInlayHintsProvider = require('./inlayHintsProvider');
 
-const hintDecorationType = vscode.window.createTextEditorDecorationType({});
 const initialNrTries = 3;
 
 /**
@@ -53,9 +52,6 @@ function activate(context) {
     if (!activeEditor || !activeEditor.document || activeEditor.document.languageId !== 'php') {
       return;
     }
-
-    // Clear old decorations since we're using inlay hints now
-    activeEditor.setDecorations(hintDecorationType, []);
 
     const isEnabled = vscode.workspace.getConfiguration('phpParameterHint').get('enabled');
 
