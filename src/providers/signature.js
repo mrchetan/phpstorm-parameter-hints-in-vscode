@@ -23,17 +23,21 @@ const getArgs = async (editor, line, character, showTypes) => {
          * provides more types
          */
         if (parameter.documentation && parameter.documentation.value) {
-          const docLabel = new RegExp(regExDoc.source, 'gims')
-            .exec(parameter.documentation.value)[1]
-            .replace('`', '')
-            .trim();
+          const match = new RegExp(regExDoc.source, 'gims')
+            .exec(parameter.documentation.value);
+          
+          if (match && match[1]) {
+            const docLabel = match[1]
+              .replace('`', '')
+              .trim();
 
-          /**
-           * Doc wrongfully shows variadic param type as array so we remove it
-           */
-          return docLabel.indexOf('[]') !== -1 && docLabel.indexOf('...') !== -1
-            ? docLabel.replace('[]', '')
-            : docLabel;
+            /**
+             * Doc wrongfully shows variadic param type as array so we remove it
+             */
+            return docLabel.indexOf('[]') !== -1 && docLabel.indexOf('...') !== -1
+              ? docLabel.replace('[]', '')
+              : docLabel;
+          }
         }
 
         // Fallback to label
