@@ -117,7 +117,9 @@ class CacheService {
       }
 
       // If both length and hash match, consider it valid
-      // This is much faster than decompressing and comparing strings
+      // This is much faster than decompressing and comparing strings,
+      // but note that hash collisions, while rare, could cause the cache to incorrectly validate changed content.
+      // This is a trade-off between performance and accuracy.
       resolve(true);
     });
   }
