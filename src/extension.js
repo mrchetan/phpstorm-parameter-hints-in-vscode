@@ -95,7 +95,7 @@ function activate(context) {
 
   vscode.workspace.onDidChangeConfiguration(event => {
     if (event.affectsConfiguration('phpParameterHint')) {
-      triggerUpdateDecorations();
+      triggerUpdateDecorations(0);
     }
   });
   vscode.window.onDidChangeActiveTextEditor(
