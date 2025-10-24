@@ -117,21 +117,22 @@ function activate(context) {
     ) {
       triggerUpdateDecorations(0);
     }
-  }, 333);
+  }, 500); // Increased from 333ms to 500ms
   vscode.window.onDidChangeTextEditorVisibleRanges(
     handleVisibleRangesChange,
     null,
     context.subscriptions
   );
+  const handleSelectionChange = debounce(() => {
+    if (
+      activeEditor &&
+      vscode.workspace.getConfiguration('phpParameterHint').get('hintOnlyLine')
+    ) {
+      triggerUpdateDecorations(0);
+    }
+  }, 150); // Add debounce to reduce rapid selection change processing
   vscode.window.onDidChangeTextEditorSelection(
-    () => {
-      if (
-        activeEditor &&
-        vscode.workspace.getConfiguration('phpParameterHint').get('hintOnlyLine')
-      ) {
-        triggerUpdateDecorations(0);
-      }
-    },
+    handleSelectionChange,
     null,
     context.subscriptions
   );
@@ -146,7 +147,7 @@ function activate(context) {
           vscode.workspace.getConfiguration('phpParameterHint').get('changeDelay')
         );
       }
-    }, 333),
+    }, 500), // Increased from 333ms to 500ms
     null,
     context.subscriptions
   );

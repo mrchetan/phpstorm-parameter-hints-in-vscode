@@ -16,6 +16,8 @@ class PhpParameterInlayHintsProvider {
     this.onDidChangeInlayHints = this._onDidChangeInlayHints.event;
     // Cache function signatures to avoid redundant lookups across hint provider calls
     this.functionDictionary = new Map();
+    // Track in-progress requests to prevent overlapping processing
+    this.activeRequests = new Map();
   }
 
   /**
@@ -53,6 +55,16 @@ class PhpParameterInlayHintsProvider {
       return [];
     }
 
+    // Cancel any previous request for this document
+    const existingRequest = this.activeRequests.get(uriStr);
+    if (existingRequest) {
+      existingRequest.cancel = true;
+    }
+
+    // Create a new request tracker
+    const currentRequest = { cancel: false };
+    this.activeRequests.set(uriStr, currentRequest);
+
     let functionGroups = [];
     const hintOnlyLine = config.get('hintOnlyLine');
     const hintOnlyLiterals = config.get('hintOnlyLiterals');
@@ -62,10 +74,18 @@ class PhpParameterInlayHintsProvider {
       functionGroups = await this.functionGroupsFacade.get(uriStr, text);
     } catch (err) {
       printError(err);
+      this.activeRequests.delete(uriStr);
+      return [];
+    }
+
+    // Check if this request was cancelled while parsing
+    if (currentRequest.cancel || token.isCancellationRequested) {
+      this.activeRequests.delete(uriStr);
       return [];
     }
 
     if (!functionGroups.length) {
+      this.activeRequests.delete(uriStr);
       return [];
     }
 
@@ -78,11 +98,23 @@ class PhpParameterInlayHintsProvider {
       )
       .process(functionGroups);
 
+    // Check for cancellation after filtering
+    if (currentRequest.cancel || token.isCancellationRequested) {
+      this.activeRequests.delete(uriStr);
+      return [];
+    }
+
     // Convert to InlayHints
     const inlayHints = [];
+    const maxHintsPerRequest = 500; // Limit number of hints to prevent excessive API calls
 
     for (const functionGroup of finalFunctionGroups) {
-      if (token.isCancellationRequested) {
+      if (currentRequest.cancel || token.isCancellationRequested) {
+        break;
+      }
+
+      // Stop processing if we've reached the limit
+      if (inlayHints.length >= maxHintsPerRequest) {
         break;
       }
 
@@ -109,6 +141,9 @@ class PhpParameterInlayHintsProvider {
         }
       }
     }
+
+    // Clean up the request tracker
+    this.activeRequests.delete(uriStr);
 
     return inlayHints;
   }
