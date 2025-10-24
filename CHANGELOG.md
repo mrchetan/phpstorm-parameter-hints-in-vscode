@@ -2,6 +2,14 @@
 
 ## [2.1.0]
 - Update Extension engine
+- **BREAKING**: Migrated to VS Code's native Inlay Hints API for better word wrap support
+- Fixes issue where parameter hints would break word wrap functionality
+- Parameter hints now respect word wrap and integrate seamlessly with the editor
+- **DEPRECATED**: Custom styling options (opacity, fontSize, fontWeight, etc.) are now deprecated
+  - Styling is now controlled by VS Code's theme system via `editorInlayHint.*` settings
+- **DEPRECATED**: Custom color settings (`phpParameterHint.hintForeground/Background`) are deprecated
+  - Use VS Code's standard `editorInlayHint.foreground/background` theme colors instead
+- All existing functionality (toggle commands, filtering options, etc.) continues to work
 
 ## 2.0.0
 
