@@ -257,4 +257,42 @@ describe('Parser', () => {
     expect(functionGroups).to.have.lengthOf(2);
     expect(functionGroups).to.deep.equal(expectedFunctionGroups);
   });
+
+  it('should correctly parse static closures and arrow functions', () => {
+    const text = `<?php
+    class Test {
+        public function someMethod($callback) {
+            return $callback();
+        }
+
+        public function test() {
+            // Regular arrow function
+            $this->someMethod(fn () => true);
+
+            // Static arrow function
+            $this->someMethod(static fn () => true);
+
+            // Regular closure
+            $this->someMethod(function () { return true; });
+
+            // Static closure
+            $this->someMethod(static function () { return true; });
+        }
+    }
+    `;
+    parser.parse(text);
+    const { functionGroups } = parser;
+
+    expect(functionGroups).to.have.lengthOf(4);
+
+    expect(functionGroups[0].args[0].start.character).to.equal(30);
+    expect(functionGroups[1].args[0].start.character).to.equal(30);
+    expect(functionGroups[2].args[0].start.character).to.equal(30);
+    expect(functionGroups[3].args[0].start.character).to.equal(30);
+
+    expect(functionGroups[0].args[0].kind).to.equal('arrowfunc');
+    expect(functionGroups[1].args[0].kind).to.equal('arrowfunc');
+    expect(functionGroups[2].args[0].kind).to.equal('closure');
+    expect(functionGroups[3].args[0].kind).to.equal('closure');
+  });
 });
