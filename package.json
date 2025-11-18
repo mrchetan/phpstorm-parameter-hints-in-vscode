@@ -262,7 +262,7 @@
     "cross-env": "^10.1.0",
     "eslint": "^9.38.0",
     "eslint-plugin-chai-friendly": "^1.1.0",
-    "glob": "^11.0.3",
+    "glob": "^11.1.0",
     "mocha": "^11.7.4",
     "nyc": "^17.1.0",
     "sinon": "^21.0.0",
