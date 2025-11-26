@@ -23,7 +23,7 @@ const removeShebang = code => {
 };
 
 const getCopyFunc = () => {
-  return copy.default;
+  return copy.copy;
 };
 
 /**

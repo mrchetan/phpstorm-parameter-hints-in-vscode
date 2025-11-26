@@ -271,7 +271,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "fast-copy": "^3.0.2",
+    "fast-copy": "^4.0.0",
     "js-coroutines": "^2.4.36",
     "lodash.debounce": "^4.0.8",
     "lzutf8": "^0.6.3",
