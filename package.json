@@ -5,7 +5,7 @@
   "version": "2.3.0",
   "publisher": "MrChetan",
   "engines": {
-    "vscode": "^1.105.0"
+    "vscode": "^1.106.1"
   },
   "sponsor": {
     "url": "https://github.com/sponsors/mr-chetan"
