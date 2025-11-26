@@ -94,7 +94,6 @@ class Parser {
         startLoc = {
           ...startLoc,
           column: startLoc.column - 7, // "static " is 7 characters
-          offset: startLoc.offset - 7,
         };
       }
 
