@@ -1,5 +1,9 @@
 # Change Log
 
+## [2.3.0]
+- **UPDATE**: Updated dependency
+- **FIX** [Static Closure Parameter Hints Position](https://github.com/mrchetan/phpstorm-parameter-hints-in-vscode/pull/33)
+
 ## [2.2.1]
 - **FIX**: Removed non-functional `phpParameterHint.hintForeground` and `phpParameterHint.hintBackground` color contributions
   - These settings were not being applied with the native Inlay Hints API
