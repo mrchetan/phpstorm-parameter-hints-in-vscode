@@ -86,9 +86,16 @@ class Parser {
         argument = argument.left;
       }
 
-      const startLoc = argument.loc.start;
+      let startLoc = argument.loc.start;
       const endLoc = argument.loc.end;
       let argKind = argument.kind || '';
+
+      if ((argument.kind === 'arrowfunc' || argument.kind === 'closure') && argument.isStatic) {
+        startLoc = {
+          ...startLoc,
+          column: startLoc.column - 7, // "static " is 7 characters
+        };
+      }
 
       if (
         argument.kind &&
