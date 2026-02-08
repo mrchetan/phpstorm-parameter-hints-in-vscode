@@ -1,5 +1,8 @@
 # Change Log
 
+## [2.3.2]
+- **UPDATE**: Updated dependency
+
 ## [2.3.0]
 - **UPDATE**: Updated dependency
 - **FIX** [Static Closure Parameter Hints Position](https://github.com/mrchetan/phpstorm-parameter-hints-in-vscode/pull/33)

@@ -2,10 +2,10 @@
   "name": "phpstorm-parameter-hints-in-vscode",
   "displayName": "PhpStorm Parameter Hints in VScode",
   "description": "PhpStorm parameter hint for VS Code",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "publisher": "MrChetan",
   "engines": {
-    "vscode": "^1.104.0"
+    "vscode": "^1.107.0"
   },
   "sponsor": {
     "url": "https://github.com/sponsors/mr-chetan"
@@ -256,22 +256,22 @@
     "webpack-dev": "webpack --mode development --watch"
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
-    "@types/vscode": "^1.104.0",
-    "chai": "^6.2.1",
+    "@types/node": "^25.2.2",
+    "@types/vscode": "^1.107.0",
+    "chai": "^6.2.2",
     "cross-env": "^10.1.0",
-    "eslint": "^9.39.1",
+    "eslint": "^10.0.0",
     "eslint-plugin-chai-friendly": "^1.1.0",
-    "glob": "^13.0.0",
+    "glob": "^13.0.1",
     "mocha": "^11.7.5",
     "nyc": "^17.1.0",
-    "sinon": "^21.0.0",
+    "sinon": "^21.0.1",
     "vscode-test": "^1.6.1",
-    "webpack": "^5.103.0",
+    "webpack": "^5.105.0",
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "fast-copy": "^4.0.0",
+    "fast-copy": "^4.0.2",
     "js-coroutines": "^2.4.36",
     "lodash.debounce": "^4.0.8",
     "lzutf8": "^0.6.3",
