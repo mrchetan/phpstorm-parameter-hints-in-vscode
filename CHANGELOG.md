@@ -1,5 +1,8 @@
 # Change Log
 
+## [2.4.0]
+- **UPDATE**: Updated dependency
+
 ## [2.3.2]
 - **UPDATE**: Updated dependency
 
