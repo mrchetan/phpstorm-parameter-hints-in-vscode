@@ -110,3 +110,6 @@ dist
 .history/
 .vscode/settings.json
 .vscode/snipsnap.code-snippets
+
+# IDE files
+package-lock.json
