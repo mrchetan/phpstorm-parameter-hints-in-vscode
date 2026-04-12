@@ -111,5 +111,5 @@ dist
 .vscode/settings.json
 .vscode/snipsnap.code-snippets
 
-# IDE files
+# Package Lock file
 package-lock.json
